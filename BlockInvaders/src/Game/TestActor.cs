@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -11,10 +12,13 @@ namespace BlockInvaders
     {
         public float Speed { get; set; } = 100;
 
+        private Color _color = Color.Blue;
+
 
         public override void Update(double deltaTime)
         {
             base.Update(deltaTime);
+
 
             //Movement
             MathLibrary.Vector2 movementInput = new MathLibrary.Vector2();
@@ -30,7 +34,13 @@ namespace BlockInvaders
             }
             
 
-            Raylib.DrawRectangleV(Transform.GlobalPosition, Transform.GlobalScale * 100, Color.Blue);
+            Raylib.DrawCircleV(Transform.GlobalPosition, (Transform.GlobalScale.x / 2) * 100, _color);
+        
+        }
+
+        public override void OnCollision(Actor other)
+        {
+            _color = Color.Red;
         }
     }
 }
