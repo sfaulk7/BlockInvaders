@@ -72,7 +72,7 @@ namespace BlockInvaders
         {
             Console.WriteLine("HI");
 
-            Raylib.InitWindow(800, 480, "Hello World");
+            Raylib.InitWindow(1600, 960, "BlockInvaders");
 
             //Timing
             Stopwatch stopwatch = new Stopwatch();
@@ -94,7 +94,7 @@ namespace BlockInvaders
                 currentTime = stopwatch.ElapsedMilliseconds;
                 
                 Raylib.BeginDrawing();
-                Raylib.ClearBackground(Color.White);
+                Raylib.ClearBackground(Color.Black);
 
                 testScene.Update(deltaTime);
 

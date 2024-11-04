@@ -9,28 +9,27 @@ namespace BlockInvaders
 {
     internal class TestScene : Scene
     {
-        Actor _thatOne;
+        Actor _blockQueen;
 
         public override void Start()
         {
             base.Start();
 
-            //Add sick af actor
-            Actor actor = new TestActor();
-            actor.Transform.LocalPosition = new MathLibrary.Vector2(200, 200);
-            AddActor(actor);
-            actor.Collider = new CircleCollider(actor, 60);
+            //Add Player actor
+            Actor player = new PlayerActor();
+            player.Transform.LocalPosition = new MathLibrary.Vector2(Raylib.GetScreenWidth() / 2, Raylib.GetScreenHeight() * .95f);
+            AddActor(player);
+            player.Collider = new CircleCollider(player, 30);
 
-            _thatOne = Actor.Instantiate(new Actor("That One"), null, new MathLibrary.Vector2(100, 100), 0);
-            _thatOne.Collider = new CircleCollider(_thatOne, 50);
-
-
+            Actor blockQueen = new BlockQueenActor();
+            blockQueen.Transform.LocalPosition = new MathLibrary.Vector2(100, 100);
+            AddActor(blockQueen);
+            blockQueen.Collider = new CircleCollider(blockQueen, 60);
         }
 
         public override void Update(double deltaTime)
         {
             base.Update(deltaTime);
-            Raylib.DrawCircleV(_thatOne.Transform.GlobalPosition, 50, Color.Green);
         }
     }
 }
