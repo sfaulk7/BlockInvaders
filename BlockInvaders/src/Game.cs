@@ -12,7 +12,9 @@ namespace BlockInvaders
     {
         private static List<Scene> _scenes;
         private static Scene _currentScene;
-        
+
+        public static Color backgroundColor = Color.Black;
+
         public static Scene CurrentScene 
         { 
             get => _currentScene;
@@ -94,7 +96,7 @@ namespace BlockInvaders
                 currentTime = stopwatch.ElapsedMilliseconds;
                 
                 Raylib.BeginDrawing();
-                Raylib.ClearBackground(Color.Black);
+                Raylib.ClearBackground(backgroundColor);
 
                 testScene.Update(deltaTime);
 

@@ -21,11 +21,18 @@ namespace BlockInvaders
             AddActor(player);
             player.Collider = new CircleCollider(player, 30);
 
+            Actor playerGun = new PlayerGun();
+            playerGun.Transform.LocalPosition = new MathLibrary.Vector2(Raylib.GetScreenWidth() / 2, Raylib.GetScreenHeight() * .95f);
+            AddActor(playerGun);
+            playerGun.Collider = new CircleCollider(playerGun, 30);
+
             Actor blockQueen = new BlockQueenActor();
             blockQueen.Transform.LocalPosition = new MathLibrary.Vector2(100, 100);
             AddActor(blockQueen);
             blockQueen.Collider = new CircleCollider(blockQueen, 60);
+
         }
+
 
         public override void Update(double deltaTime)
         {

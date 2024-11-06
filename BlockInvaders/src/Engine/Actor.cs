@@ -156,9 +156,10 @@ namespace BlockInvaders
             return component;
         }
 
-        public T AddComponent<T>() where T : Component
+        public T AddComponent<T>() where T : Component, new()
         {
             T component = (T)new Component(this);
+            component.Owner = this;
             return AddComponent(component);
         }
 

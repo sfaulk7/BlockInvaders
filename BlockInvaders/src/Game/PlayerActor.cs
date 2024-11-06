@@ -12,14 +12,17 @@ namespace BlockInvaders
     {
         public float Speed { get; set; } = 1000;
 
-        private Color _color = Color.Blue;
+        private Color _color = Color.White;
 
-        private int projectileCharge;
-        private int projectileLifetime;
-        private int parryLifetime;
+        public int parryLifetime;
+
+        public int projectileCharge;
+        public int projectileLifetime;
 
         //Make W shoot projectiles
         //Make S a parry button
+        //Enemy projectiles will be red
+        //Parryable enemy projectiles will be yellow
 
         public override void Update(double deltaTime)
         {
@@ -42,104 +45,14 @@ namespace BlockInvaders
 
             Raylib.DrawCircleV(Transform.GlobalPosition, (Transform.GlobalScale.x / 4) * 100, _color);
 
-            //If W is held down charge a projectile
-            if (Raylib.IsKeyDown(KeyboardKey.W))
-            {
-                if (projectileLifetime < 125)
-                {
-                    projectileCharge = 0;
-                }
-                if (projectileLifetime > 125)
-                {
-                    Raylib.DrawCircleV(Transform.GlobalPosition, (Transform.GlobalScale.x / 12) * 100, Color.Red);
-                    projectileCharge = 1;
-                }
 
-                if (projectileLifetime > 2000)
-                {
-                    Raylib.DrawCircleV(Transform.GlobalPosition, (Transform.GlobalScale.x / 10) * 100, Color.Orange);
-                    projectileCharge = 2;
-                }
-
-                if (projectileLifetime > 5000)
-                {
-                    Raylib.DrawCircleV(Transform.GlobalPosition, (Transform.GlobalScale.x / 8) * 100, Color.White);
-                    projectileCharge = 3;
-                }
-
-                if (projectileLifetime > 10000)
-                {
-                    Raylib.DrawCircleV(Transform.GlobalPosition, (Transform.GlobalScale.x / 6) * 100, Color.DarkBlue);
-                    projectileCharge = 4;
-                }
-
-                if (projectileLifetime > 25000)
-                {
-                    Raylib.DrawCircleV(Transform.GlobalPosition, (Transform.GlobalScale.x / 5) * 100, Color.Violet);
-                    projectileCharge = 5;
-                }
-                projectileLifetime++;
-            }
-            //Shoot a projectile with different effects depenting on the charge
-            if (!(Raylib.IsKeyDown(KeyboardKey.W)) && projectileLifetime > 0)
-            {
-                //1 damage small projectile
-                if (projectileCharge == 0)
-                {
-
-
-
-                }
-
-                //2 damage small projectile
-                if (projectileCharge == 1)
-                {
-
-
-
-                }
-
-                //4 damage small projectile
-                if (projectileCharge == 2)
-                {
-
-
-
-                }
-
-                //6 damage small projectile
-                if (projectileCharge == 3)
-                {
-
-
-
-                }
-
-                //10 damage small projectile
-                if (projectileCharge == 4)
-                {
-
-
-
-                }
-
-                //20 damage big projectile
-                if (projectileCharge == 5)
-                {
-
-
-
-                }
-
-                projectileCharge = 0;
-                projectileLifetime = 0;
-            }
+            
 
         }
 
         public override void OnCollision(Actor other)
         {
-            _color = Color.Red;
+            //_color = Color.Red;
         }
     }
 }
