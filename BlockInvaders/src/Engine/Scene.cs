@@ -33,17 +33,17 @@ namespace BlockInvaders
         public virtual void Update(double deltaTime)
         {
             //Update Actors
-            foreach (Actor actor in _actors)
+            for (int i = 0; i < _actors.Count; i++)
             {
-                if (!actor.Started)
+                if (!_actors[i].Started)
                 {
-                    actor.Start();
+                    _actors[i].Start();
                 }
-                actor.Update(deltaTime);
+                _actors[i].Update(deltaTime);
 
-                if(actor.Collider != null)
+                if (_actors[i].Collider != null)
                 {
-                    actor.Collider.Draw();
+                    _actors[i].Collider.Draw();
                 }
             }
 

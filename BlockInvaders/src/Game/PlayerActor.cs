@@ -28,6 +28,9 @@ namespace BlockInvaders
         {
             base.Update(deltaTime);
 
+            //Define player attributes
+            float playerSize = (Transform.GlobalScale.x / 4) * 100;
+            MathLibrary.Vector2 playerPosition = Transform.GlobalPosition;
 
             //Movement
             MathLibrary.Vector2 movementInput = new MathLibrary.Vector2();
@@ -37,16 +40,17 @@ namespace BlockInvaders
             movementInput.x += Raylib.IsKeyDown(KeyboardKey.D);
             MathLibrary.Vector2 deltaMovement = movementInput.Normalized * Speed * (float)deltaTime;
 
+            //Moves player if deltaMovement has a value
             if (deltaMovement.Magnitude != 0)
             {
                 Transform.LocalPosition += (deltaMovement);
             }
             
-
-            Raylib.DrawCircleV(Transform.GlobalPosition, (Transform.GlobalScale.x / 4) * 100, _color);
-
+            //Draw Player
+            Raylib.DrawCircleV(playerPosition, playerSize, _color);
 
             
+
 
         }
 

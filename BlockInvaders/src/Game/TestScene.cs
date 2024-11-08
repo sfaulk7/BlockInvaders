@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using Raylib_cs;
@@ -9,26 +10,25 @@ namespace BlockInvaders
 {
     internal class TestScene : Scene
     {
-        Actor _blockQueen;
-
         public override void Start()
         {
             base.Start();
 
             //Add Player actor
-            Actor player = new PlayerActor();
-            player.Transform.LocalPosition = new MathLibrary.Vector2(Raylib.GetScreenWidth() / 2, Raylib.GetScreenHeight() * .95f);
-            AddActor(player);
+            MathLibrary.Vector2 playerStartPosition = new MathLibrary.Vector2(Raylib.GetScreenWidth() / 2, Raylib.GetScreenHeight() * .95f);
+            Actor player = Actor.Instantiate(new PlayerActor(), null, playerStartPosition, 0);
+            //Draw player's collider
             player.Collider = new CircleCollider(player, 30);
 
-            Actor playerGun = new PlayerGun();
-            playerGun.Transform.LocalPosition = new MathLibrary.Vector2(Raylib.GetScreenWidth() / 2, Raylib.GetScreenHeight() * .95f);
-            AddActor(playerGun);
-            playerGun.Collider = new CircleCollider(playerGun, 30);
 
-            Actor blockQueen = new BlockQueenActor();
-            blockQueen.Transform.LocalPosition = new MathLibrary.Vector2(100, 100);
-            AddActor(blockQueen);
+
+            //Draw Player gun
+            Actor playerGun = Actor.Instantiate(new PlayerGun(), null, playerStartPosition, 0);
+
+            //Draw blockQueen
+            MathLibrary.Vector2 blockQueenPos = new MathLibrary.Vector2(100, 100);
+            Actor blockQueen = Actor.Instantiate(new BlockQueenActor(), null, blockQueenPos, 0);
+            //Draw blockqueen's collider
             blockQueen.Collider = new CircleCollider(blockQueen, 60);
 
         }
