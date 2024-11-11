@@ -15,49 +15,27 @@ namespace BlockInvaders
 
         public int parryLifetime;
 
-        
-
-
-        //Make W shoot projectiles
+        //This offset moves playerGun from the center of playerActor to the top
+        MathLibrary.Vector2 offset = new MathLibrary.Vector2(0, -15);
 
         public override void Start()
         {
             base.Start();
-            AddComponent<Shoot>(new Shoot(this));
+            AddComponent<DrawComponent>(new DrawComponent(this, (Transform.GlobalScale.x / 8) * 100, Color.Black));
+            AddComponent<ChargeShotComponent>(new ChargeShotComponent(this, offset));
+            AddComponent<PlayerShootComponent>(new PlayerShootComponent(this, (this).GetComponent<ChargeShotComponent>().projectileCharge));
         }
 
         public override void Update(double deltaTime)
         {
             base.Update(deltaTime);
-
-
-
-            //Movement
-            MathLibrary.Vector2 movementInput = new MathLibrary.Vector2();
-            //movementInput.y -= Raylib.IsKeyDown(KeyboardKey.W);
-            movementInput.x -= Raylib.IsKeyDown(KeyboardKey.A);
-            //movementInput.y += Raylib.IsKeyDown(KeyboardKey.S);
-            movementInput.x += Raylib.IsKeyDown(KeyboardKey.D);
-            MathLibrary.Vector2 deltaMovement = movementInput.Normalized * Speed * (float)deltaTime;
-
-            if (deltaMovement.Magnitude != 0)
-            {
-                Transform.LocalPosition += (deltaMovement);
-            }
-
-            MathLibrary.Vector2 offset = new MathLibrary.Vector2(0, -15);
-
-            Raylib.DrawCircleV(Transform.GlobalPosition + offset, (Transform.GlobalScale.x / 8) * 100, Color.Black);
-
-            
-            
-
-
         }
 
+        //PlayerGun will not have a Collision behavior
+        //I will be leaving this here though in case i want to change that
         public override void OnCollision(Actor other)
         {
-            //_color = Color.Red;
+            //Do nothing
         }
     }
 }

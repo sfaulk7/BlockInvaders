@@ -152,7 +152,7 @@ namespace BlockInvaders
         {
             //old array is _children
 
-            // Do not add the child if it is this transfor's parents
+            // Do not add the child if it is this transform's parents
             if (child == _parent)
             {
                 return;

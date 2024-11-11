@@ -16,17 +16,29 @@ namespace BlockInvaders
 
         public int parryLifetime;
 
-        public int projectileCharge;
-        public int projectileLifetime;
+        bool playerHit = false;
+        bool hitFlash = false;
+        int hitFlashCount = 0;
+        int hitFlashTimer = 0;
 
         //Make W shoot projectiles
         //Make S a parry button
         //Enemy projectiles will be red
         //Parryable enemy projectiles will be yellow
 
+        
+
+        public override void Start()
+        {
+            base.Start();
+            AddComponent<DrawComponent>(new DrawComponent(this, (Transform.GlobalScale.x / 4) * 100, _color));
+            AddComponent<HealthComponent>(new HealthComponent(this, 3));
+        }
+
         public override void Update(double deltaTime)
         {
             base.Update(deltaTime);
+            
 
             //Define player attributes
             float playerSize = (Transform.GlobalScale.x / 4) * 100;
@@ -47,16 +59,53 @@ namespace BlockInvaders
             }
             
             //Draw Player
-            Raylib.DrawCircleV(playerPosition, playerSize, _color);
+            //Raylib.DrawCircleV(playerPosition, playerSize, _color);
 
-            
+            //Flash Between red and _color when hit (to display iframes)
+            if (hitFlash == true)
+            {
+                _color = Color.Red;
+                hitFlashTimer++;
+                if (hitFlashTimer >= 1250)
+                {
+                    hitFlash = false;
+                    hitFlashTimer = 0;
+                    hitFlashCount++;
+                }
+            }
+            else if (hitFlash == false)
+            {
+                _color = Color.White;
 
+                if (hitFlashCount > 0 && hitFlashCount < 5)
+                {
+                    hitFlashTimer++;
+                }
 
+                if (hitFlashCount >= 5)
+                {
+                    hitFlashCount = 0;
+                    playerHit = false;
+                }
+
+                if (hitFlashTimer >= 1250)
+                {
+                    
+                    hitFlash = true;
+                    hitFlashTimer = 0;
+                }
+            }
         }
 
         public override void OnCollision(Actor other)
         {
-            //_color = Color.Red;
+            //Only do collision behavior if the colliding Actor isn't playerGun or playerProjectile
+            if (other.ToString() != "playerGun" && (other.ToString() != "BlockInvaders.PlayerProjectileActor") && playerHit == false)
+            {
+                playerHit = true;
+                hitFlash = true;
+                (this).GetComponent<HealthComponent>().Health--;
+            }
         }
     }
 }

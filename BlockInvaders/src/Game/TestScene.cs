@@ -10,6 +10,7 @@ namespace BlockInvaders
 {
     internal class TestScene : Scene
     {
+
         public override void Start()
         {
             base.Start();
@@ -20,10 +21,8 @@ namespace BlockInvaders
             //Draw player's collider
             player.Collider = new CircleCollider(player, 30);
 
-
-
             //Draw Player gun
-            Actor playerGun = Actor.Instantiate(new PlayerGun(), null, playerStartPosition, 0);
+            Actor playerGun = Actor.Instantiate(new PlayerGun(), player.Transform, default, 0);
 
             //Draw blockQueen
             MathLibrary.Vector2 blockQueenPos = new MathLibrary.Vector2(100, 100);

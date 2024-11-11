@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Net.Http.Headers;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using MathLibrary;
@@ -15,6 +16,7 @@ namespace BlockInvaders
         private bool _enabled = true;
 
         private Component[] _components;
+        private Component[] _componentsToRemove;
 
         public bool Started { get => _started; }
         public bool Enabled
@@ -50,6 +52,7 @@ namespace BlockInvaders
             Name = name;
             Transform = new Transform2D(this);
             _components = new Component[0];
+            _componentsToRemove = new Component[0];
         }
 
         public static Actor Instantiate(
@@ -119,6 +122,10 @@ namespace BlockInvaders
 
                 component.Update(deltaTime);
             }
+
+            //Remove componets that should be removed
+            RemoveComponentsToBeRemoved();
+
         }
 
         public virtual void End()
@@ -172,41 +179,63 @@ namespace BlockInvaders
                 return false;
             }
 
-            //Edge case for only one component array
             if (_components.Length <= 1 && _components[0] == component)
             {
-                _components = new Component[0];
-                return true;
+                //Add component to _componentsToRemove
+                AddComponentToRemove(component);
+
             }
 
-            //Create temorary array one smaller than _componets
-            Component[] temp = new Component[_components.Length - 1];
-            bool componentRemoved = false;
-
-            //Deep copy _components into temp minus one component
-            int j = 0;
-            for (int i = 0; j < _components.Length - 1; i++)
+            //Loop through _components
+            foreach ( Component comp in _components)
             {
-                //If the current component isn't the one that is being removed; copy
-                if (_components[i] != component)
+                if (comp == component)
                 {
-                    temp[j] = _components[i];
-                    j++;
-                }
-                //If the current component is the one being removed
-                else
-                {
-                    componentRemoved = true;
+                    // Add component to _componentsToRemove
+                    AddComponentToRemove(comp);
+
+                    //Stop the loop when a component is removed
+                    return true;
                 }
             }
 
-            //Copy the temp array into as the new _components array
-            if (componentRemoved)
-            {
-                _components = temp;
-            }
+            return false;
 
-            return componentRemoved;
+            ////Edge case for only one component array
+            //if (_components.Length <= 1 && _components[0] == component)
+            //{
+            //    _components = new Component[0];
+            //    return true;
+            //}
+
+                ////Create temorary array one smaller than _componets
+                //Component[] temp = new Component[_components.Length - 1];
+                //bool componentRemoved = false;
+
+                ////Deep copy _components into temp minus one component
+                //int j = 0;
+                //for (int i = 0; j < _components.Length - 1; i++)
+                //{
+                //    //If the current component isn't the one that is being removed; copy
+                //    if (_components[i] != component)
+                //    {
+                //        temp[j] = _components[i];
+                //        j++;
+                //    }
+                //    //If the current component is the one being removed
+                //    else
+                //    {
+                //        componentRemoved = true;
+                //    }
+                //}
+
+                ////Copy the temp array into as the new _components array
+                //if (componentRemoved)
+                //{
+                //    _components = temp;
+                //}
+
+                //return componentRemoved;
         }
 
         public bool RemoveComponent<T>() where T: Component
@@ -262,5 +291,85 @@ namespace BlockInvaders
 
         }
 
+        private void AddComponentToRemove(Component comp)
+        {
+            //Ensure component is not already being removed
+            foreach (Component component in _componentsToRemove)
+            {
+                if (component == comp)
+                {
+                    return;
+                }
+            }
+
+            //Create temorary array one bigger than _componetsToRemove
+            Component[] temp = new Component[_componentsToRemove.Length + 1];
+
+            //Deep copy _componentsToRemove into temp
+            for (int i = 0; i < _componentsToRemove.Length; i++)
+            {
+                temp[i] = _componentsToRemove[i];
+
+            }
+
+            //Set the last index in temp to the component we wish to have
+            temp[temp.Length - 1] = comp;
+
+            //Store temp in _componentsToRemove
+            _componentsToRemove = temp;
+        }
+
+        private void RemoveComponentsToBeRemoved()
+        {
+            //If there are no components to remove, return
+            if (_componentsToRemove.Length <= 0)
+            {
+                return;
+            }
+
+            //Create temp array for _components
+            Component[] tempComponents = new Component[_components.Length];
+
+            //Deep copy array
+            for (int i = 0; i < _components.Length; i++)
+            {
+                tempComponents[i] = _components[i];
+            }
+
+            //Deep copy the array, removeing the elemets in _componentsToRemove
+            int j = 0;
+            for (int i = 0; i < _components.Length; i++)
+            {
+                //Loop through components to check if any of them is equal to this one
+                bool removed = false;
+                foreach (Component component in _componentsToRemove)
+                {
+                    if (_components[i] == component)
+                    {
+                        removed = true;
+                        component.End();
+                        break;
+                    }
+                }
+
+                //If we did not find one to remove, copy the item and increment the temp array
+                if (!removed)
+                {
+                    tempComponents[j] = _components[i];
+                    j++;
+                }
+            }
+
+            //Trim the array
+            Component[] result = new Component[_components.Length - _componentsToRemove.Length];
+            for (int i = 0; i < result.Length; i++)
+            {
+                result[i] = tempComponents[i];
+            }
+
+            //Set _components
+            _components = result;
+
+        }
     }
 }
