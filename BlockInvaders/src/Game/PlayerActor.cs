@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
+using System.Threading.Channels;
 using System.Threading.Tasks;
 
 namespace BlockInvaders
@@ -16,10 +17,14 @@ namespace BlockInvaders
 
         public int parryLifetime;
 
+        //False will be basic shots, true will be charged shots
+        public static bool firingMode = true;
+
         bool playerHit = false;
         bool hitFlash = false;
         int hitFlashCount = 0;
         int hitFlashTimer = 0;
+        int afterHitIframeTimer = 0;
 
         //Make W shoot projectiles
         //Make S a parry button
@@ -31,7 +36,7 @@ namespace BlockInvaders
         public override void Start()
         {
             base.Start();
-            AddComponent<DrawComponent>(new DrawComponent(this, (Transform.GlobalScale.x / 4) * 100, _color));
+            AddComponent<DrawComponent>(new DrawComponent(this, (Transform.GlobalScale.x / 4) * 100, _color, new MathLibrary.Vector2(0, 0)));
             AddComponent<HealthComponent>(new HealthComponent(this, 3));
         }
 
@@ -47,24 +52,60 @@ namespace BlockInvaders
             //Movement
             MathLibrary.Vector2 movementInput = new MathLibrary.Vector2();
             //movementInput.y -= Raylib.IsKeyDown(KeyboardKey.W);
-            movementInput.x -= Raylib.IsKeyDown(KeyboardKey.A);
             //movementInput.y += Raylib.IsKeyDown(KeyboardKey.S);
-            movementInput.x += Raylib.IsKeyDown(KeyboardKey.D);
+
+            //Stop player if going to far left
+            if (playerPosition.x >= 0 + 25)
+            {
+                movementInput.x -= Raylib.IsKeyDown(KeyboardKey.A);
+            }
+
+            //Stop player if going to far right
+            if (playerPosition.x <= Raylib.GetScreenWidth() - 25)
+            {
+                movementInput.x += Raylib.IsKeyDown(KeyboardKey.D);
+            }
             MathLibrary.Vector2 deltaMovement = movementInput.Normalized * Speed * (float)deltaTime;
+
+            //Swap Firing Mode
+            if (Raylib.IsKeyPressed(KeyboardKey.Q) || Raylib.IsKeyPressed(KeyboardKey.E))
+            {
+                firingMode = !(firingMode);
+            }
+            //Display firingMode
+            if (firingMode == true)
+            {
+                Raylib.DrawText("Current Shot Mode: Charge",
+                (Raylib.GetScreenWidth() / 2) - 75,
+                Raylib.GetScreenHeight() - 25,
+                10,
+                Color.Red);
+            }
+            if (firingMode == false)
+            {
+                Raylib.DrawText("Current Shot Mode: Rapid",
+                (Raylib.GetScreenWidth() / 2) - 75,
+                Raylib.GetScreenHeight() - 25,
+                10,
+                Color.Red);
+            }
+            //Mode Swap Instructions
+            Raylib.DrawText("Q/E to swap",
+            (Raylib.GetScreenWidth() / 2) - 75,
+            Raylib.GetScreenHeight() - 15,
+            10,
+            Color.Red);
 
             //Moves player if deltaMovement has a value
             if (deltaMovement.Magnitude != 0)
             {
                 Transform.LocalPosition += (deltaMovement);
             }
-            
-            //Draw Player
-            //Raylib.DrawCircleV(playerPosition, playerSize, _color);
 
             //Flash Between red and _color when hit (to display iframes)
             if (hitFlash == true)
             {
-                _color = Color.Red;
+                (this).GetComponent<DrawComponent>().Color = Color.Red;
                 hitFlashTimer++;
                 if (hitFlashTimer >= 1250)
                 {
@@ -75,7 +116,7 @@ namespace BlockInvaders
             }
             else if (hitFlash == false)
             {
-                _color = Color.White;
+                (this).GetComponent<DrawComponent>().Color = Color.White;
 
                 if (hitFlashCount > 0 && hitFlashCount < 5)
                 {
@@ -85,7 +126,6 @@ namespace BlockInvaders
                 if (hitFlashCount >= 5)
                 {
                     hitFlashCount = 0;
-                    playerHit = false;
                 }
 
                 if (hitFlashTimer >= 1250)
@@ -93,6 +133,17 @@ namespace BlockInvaders
                     
                     hitFlash = true;
                     hitFlashTimer = 0;
+                }
+            }
+
+            //I-frames between taking damage
+            if (playerHit == true)
+            {
+                afterHitIframeTimer++;
+                if (afterHitIframeTimer >= 5000)
+                {
+                    afterHitIframeTimer = 0;
+                    playerHit = false;
                 }
             }
         }
@@ -105,6 +156,20 @@ namespace BlockInvaders
                 playerHit = true;
                 hitFlash = true;
                 (this).GetComponent<HealthComponent>().Health--;
+                if ((this).GetComponent<HealthComponent>().Health <= 0)
+                {
+                    //FIND A WAY TO GET TEST SCENE TO END
+                    //FIND A WAY TO GET TEST SCENE TO END
+                    //FIND A WAY TO GET TEST SCENE TO END
+                    //FIND A WAY TO GET TEST SCENE TO END
+                    //FIND A WAY TO GET TEST SCENE TO END
+                    //FIND A WAY TO GET TEST SCENE TO END
+                    //FIND A WAY TO GET TEST SCENE TO END
+                    //FIND A WAY TO GET TEST SCENE TO END
+                    //FIND A WAY TO GET TEST SCENE TO END
+                    //FIND A WAY TO GET TEST SCENE TO END
+                    //FIND A WAY TO GET TEST SCENE TO END
+                }
             }
         }
     }

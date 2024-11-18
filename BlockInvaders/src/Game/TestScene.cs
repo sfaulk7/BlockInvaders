@@ -10,6 +10,12 @@ namespace BlockInvaders
 {
     internal class TestScene : Scene
     {
+        public Actor blockQueen = new Actor();
+
+        float timeAlive = 0;
+        float waveCountDown = 20;
+        float waveTimer = 20;
+        public static int waveCount = 1;
 
         public override void Start()
         {
@@ -25,10 +31,10 @@ namespace BlockInvaders
             Actor playerGun = Actor.Instantiate(new PlayerGun(), player.Transform, default, 0);
 
             //Draw blockQueen
-            MathLibrary.Vector2 blockQueenPos = new MathLibrary.Vector2(100, 100);
-            Actor blockQueen = Actor.Instantiate(new BlockQueenActor(), null, blockQueenPos, 0);
+            MathLibrary.Vector2 blockQueenPos = new MathLibrary.Vector2(Raylib.GetScreenWidth() / 2, 100);
+            blockQueen = Actor.Instantiate(new BlockQueenActor(), null, blockQueenPos, 0);
             //Draw blockqueen's collider
-            blockQueen.Collider = new CircleCollider(blockQueen, 60);
+            blockQueen.Collider = new CircleCollider(blockQueen, 40);
 
         }
 
@@ -36,6 +42,64 @@ namespace BlockInvaders
         public override void Update(double deltaTime)
         {
             base.Update(deltaTime);
+
+            waveCountDown -= (float)deltaTime;
+            timeAlive += (float)deltaTime;
+
+            //Draw Waves Completed
+            Raylib.DrawText("Wave Count: " + waveCount,
+            10,
+            10,
+            10,
+            Color.Red);
+
+            //Draw Time Alive
+            Raylib.DrawText("Time Alive: " + timeAlive,
+            10,
+            20,
+            10,
+            Color.Red);
+
+            //Draw Time Till Next Wave
+            Raylib.DrawText("Next wave in: " + waveCountDown,
+            10,
+            30,
+            10,
+            Color.Red);
+
+            //Draw Time Till Next Wave
+            Raylib.DrawText("Current Time Per Wave: " + waveTimer,
+            10,
+            40,
+            10,
+            Color.Red);
+
+            if (waveCountDown <= 0 || Raylib.IsKeyPressed(KeyboardKey.Enter))
+            {
+                waveTimer = 20 - waveCount / 5;
+                if (waveTimer < 5)
+                {
+                    waveTimer = 5;
+                }
+                waveCountDown = waveTimer;
+                waveCount++;
+
+                //Draw blockQueen
+                MathLibrary.Vector2 blockQueenPos = new MathLibrary.Vector2(Raylib.GetScreenWidth() / 2, 100);
+                blockQueen = Actor.Instantiate(new BlockQueenActor(), null, blockQueenPos, 0);
+                //Draw blockqueen's collider
+                blockQueen.Collider = new CircleCollider(blockQueen, 40);
+            }
+        }
+
+        public override void End()
+        {
+            base.End();
+            Raylib.DrawText("GAME OVER \n ENTER TO TRY AGAIN",
+            Raylib.GetScreenWidth() / 2,
+            Raylib.GetScreenHeight() / 2,
+            100,
+            Color.Red);
         }
     }
 }

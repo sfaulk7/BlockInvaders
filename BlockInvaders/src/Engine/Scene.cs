@@ -11,6 +11,7 @@ namespace BlockInvaders
     internal class Scene
     {
         private List<Actor> _actors;
+        private List<Actor> _actorsToBeRemoved;
 
         public void AddActor(Actor actor)
         {
@@ -22,12 +23,14 @@ namespace BlockInvaders
 
         public bool RemoveActor(Actor actor)
         {
-            return _actors.Remove(actor);
+            AddToRemoveActor(actor);
+            return true;
         }
 
         public virtual void Start()
         {
             _actors = new List<Actor>();
+            _actorsToBeRemoved = new List<Actor>();
         }
 
         public virtual void Update(double deltaTime)
@@ -70,6 +73,7 @@ namespace BlockInvaders
                     }
                 }
             }
+            ActorToBeRemoved();
         }
 
         public virtual void End()
@@ -80,5 +84,26 @@ namespace BlockInvaders
                 actor.End();
             }
         }
+
+        private bool AddToRemoveActor(Actor actor)
+        {
+            _actorsToBeRemoved.Add(actor);
+            return true;
+        }
+
+        private void ActorToBeRemoved()
+        {
+            for (int i = 0; i < _actors.Count; i++)
+            {
+                if (_actorsToBeRemoved.Contains(_actors[i]))
+                {
+                    _actors.Remove(_actors[i]);
+                }
+            }
+            _actorsToBeRemoved.Clear();
+            _actors.TrimExcess();
+            _actorsToBeRemoved.TrimExcess();
+        }
+
     }
 }

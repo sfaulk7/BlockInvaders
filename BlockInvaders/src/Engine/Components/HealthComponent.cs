@@ -28,20 +28,36 @@ namespace BlockInvaders
 
         public override void Update(double deltaTime)
         {
-            base.Update(deltaTime);
-
-
-            Raylib.DrawText(_health.ToString(), 
-                (int)Owner.Transform.GlobalPosition.x, 
-                (int)Owner.Transform.GlobalPosition.y, 
-                25, 
-                Color.Green);
-
-            if (Health <= 0)
+            if (Enabled)
             {
-                
-                //Raylib.DrawText("GAME OVER", screenWidth / 2, screenHeight / 2, 100, Color.White);
+                base.Update(deltaTime);
+
+
+                Raylib.DrawText(_health.ToString(),
+                    (int)Owner.Transform.GlobalPosition.x,
+                    (int)Owner.Transform.GlobalPosition.y,
+                    25,
+                    Color.Green);
+
+                if (Health <= 0)
+                {
+
+                    //Raylib.DrawText("GAME OVER", screenWidth / 2, screenHeight / 2, 100, Color.White);
+                }
+
+                if (_health <= 0)
+                {
+                    End();
+                }
             }
+        }
+
+        public override void End()
+        {
+            base.End();
+            Enabled = false;
+
+            Actor.Destroy(Owner);
         }
     }
 }
