@@ -63,8 +63,6 @@ namespace BlockInvaders
                     Actor enemyProjectile = Actor.Instantiate(new EnemyProjectileActor(), null, Owner.Transform.GlobalPosition, 0);
                     enemyProjectile.Collider = new CircleCollider(enemyProjectile, projectileSize);
                 }
-
-                Console.WriteLine(fire);
             }
         }
     }

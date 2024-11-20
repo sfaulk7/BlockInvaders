@@ -12,10 +12,10 @@ namespace BlockInvaders
     {
         public Actor blockQueen = new Actor();
 
-        float timeAlive = 0;
-        float waveCountDown = 20;
-        float waveTimer = 20;
-        public static int waveCount = 1;
+        float timeAlive;
+        float waveCountDown;
+        float waveTimer;
+        public static int waveCount;
 
         public override void Start()
         {
@@ -36,6 +36,10 @@ namespace BlockInvaders
             //Draw blockqueen's collider
             blockQueen.Collider = new CircleCollider(blockQueen, 40);
 
+            timeAlive = 0;
+            waveCountDown = 20;
+            waveTimer = 20;
+            waveCount = 1;
         }
 
 
@@ -95,11 +99,8 @@ namespace BlockInvaders
         public override void End()
         {
             base.End();
-            Raylib.DrawText("GAME OVER \n ENTER TO TRY AGAIN",
-            Raylib.GetScreenWidth() / 2,
-            Raylib.GetScreenHeight() / 2,
-            100,
-            Color.Red);
+            
+            
         }
     }
 }

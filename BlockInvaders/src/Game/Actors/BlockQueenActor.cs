@@ -75,7 +75,7 @@ namespace BlockInvaders
             if (other.ToString() == "BlockInvaders.PlayerProjectileActor" && enemyHit == false)
             {
                 //enemyHit = true;
-                (this).GetComponent<HealthComponent>().Health--;
+                (this).GetComponent<HealthComponent>().Health -= PlayerShootComponent.projectileDamage;
             }
         }
     }

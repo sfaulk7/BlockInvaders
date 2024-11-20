@@ -146,29 +146,38 @@ namespace BlockInvaders
                     playerHit = false;
                 }
             }
+
+
+
+
+            //DEV KILL BIND
+            if (Raylib.IsKeyPressed(KeyboardKey.Delete))
+            {
+                (this).GetComponent<HealthComponent>().Health--;
+                if ((this).GetComponent<HealthComponent>().Health <= 0)
+                {
+
+                    //Go to death scene
+                    Game.CurrentScene = Game.GetScene(1);
+                }
+            }
         }
 
         public override void OnCollision(Actor other)
         {
             //Only do collision behavior if the colliding Actor isn't playerGun or playerProjectile
-            if (other.ToString() != "playerGun" && (other.ToString() != "BlockInvaders.PlayerProjectileActor") && playerHit == false)
+            if (other.ToString() == "BlockInvaders.BlockQueenActor" || other.ToString() == "BlockInvaders.EnemyActor" || other.ToString() == "BlockInvaders.EnemyProjectileActor")
             {
-                playerHit = true;
-                hitFlash = true;
-                (this).GetComponent<HealthComponent>().Health--;
-                if ((this).GetComponent<HealthComponent>().Health <= 0)
+                if (playerHit == false)
                 {
-                    //FIND A WAY TO GET TEST SCENE TO END
-                    //FIND A WAY TO GET TEST SCENE TO END
-                    //FIND A WAY TO GET TEST SCENE TO END
-                    //FIND A WAY TO GET TEST SCENE TO END
-                    //FIND A WAY TO GET TEST SCENE TO END
-                    //FIND A WAY TO GET TEST SCENE TO END
-                    //FIND A WAY TO GET TEST SCENE TO END
-                    //FIND A WAY TO GET TEST SCENE TO END
-                    //FIND A WAY TO GET TEST SCENE TO END
-                    //FIND A WAY TO GET TEST SCENE TO END
-                    //FIND A WAY TO GET TEST SCENE TO END
+                    playerHit = true;
+                    hitFlash = true;
+                    (this).GetComponent<HealthComponent>().Health--;
+                    if ((this).GetComponent<HealthComponent>().Health <= 0)
+                    {
+                        //Go to death scene
+                        Game.CurrentScene = Game.GetScene(1);
+                    }
                 }
             }
         }

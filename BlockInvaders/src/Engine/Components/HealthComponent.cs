@@ -36,13 +36,12 @@ namespace BlockInvaders
                 Raylib.DrawText(_health.ToString(),
                     (int)Owner.Transform.GlobalPosition.x,
                     (int)Owner.Transform.GlobalPosition.y,
-                    25,
+                    (int)Owner.Transform.LocalScale.x * 25,
                     Color.Green);
 
                 if (Health <= 0)
                 {
-
-                    //Raylib.DrawText("GAME OVER", screenWidth / 2, screenHeight / 2, 100, Color.White);
+                    End();
                 }
 
                 if (_health <= 0)

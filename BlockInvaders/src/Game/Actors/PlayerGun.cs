@@ -20,7 +20,6 @@ namespace BlockInvaders
         {
             base.Start();
             AddComponent<DrawComponent>(new DrawComponent(this, (Transform.GlobalScale.x / 8) * 100, _color, offset));
-            AddComponent<ChargeShotComponent>(new ChargeShotComponent(this, offset));
             AddComponent<PlayerShootComponent>(new PlayerShootComponent(this));
         }
 
@@ -28,7 +27,6 @@ namespace BlockInvaders
         {
             base.Update(deltaTime);
 
-            (this).GetComponent<PlayerShootComponent>().projectileCharge = (this).GetComponent<ChargeShotComponent>().projectileCharge;
         }
 
 

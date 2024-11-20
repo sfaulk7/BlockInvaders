@@ -84,12 +84,15 @@ namespace BlockInvaders
             double deltaTime = 1;
 
             Scene testScene = new TestScene();
+            Scene deathScene = new DeathScene();
             AddScene(testScene);
+            AddScene(deathScene);
+            CurrentScene = GetScene(0);
 
             //Scene
-            //Scene testScene = new Scene();
-            testScene.Start();
-            testScene.AddActor(new Actor());
+            CurrentScene.Start();
+            CurrentScene.AddActor(new Actor());
+            
 
             while (!Raylib.WindowShouldClose())
             {
@@ -98,11 +101,13 @@ namespace BlockInvaders
                 Raylib.BeginDrawing();
                 Raylib.ClearBackground(backgroundColor);
 
-                testScene.Update(deltaTime);
+                CurrentScene.Update(deltaTime);
 
                 Raylib.EndDrawing();
                 deltaTime = (currentTime - lastTime) / 1000.0;
                 lastTime = currentTime;
+
+                
             }
 
             CurrentScene.End();

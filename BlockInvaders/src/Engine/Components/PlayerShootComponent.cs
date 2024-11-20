@@ -11,10 +11,11 @@ namespace BlockInvaders
 {
     internal class PlayerShootComponent : Component
     {
-        private Color _color = Color.Brown;
+        public static Color projectileColor = Color.Brown;
         public int projectileCharge;
         public int projectileLifetime;
-        public float projectileSize;
+        public static int projectileDamage;
+        public static float projectileSize;
         MathLibrary.Vector2 _offset = new MathLibrary.Vector2(0, -15);
 
         public float ProjectileSize
@@ -29,10 +30,10 @@ namespace BlockInvaders
 
         public Color Color
         {
-            get => _color;
+            get => projectileColor;
             set
             {
-                _color = value;
+                projectileColor = value;
                 return;
             }
         }
@@ -54,6 +55,12 @@ namespace BlockInvaders
             //Do Normal Shot
             if (PlayerActor.firingMode == false)
             {
+                projectileDamage = 1;
+                projectileColor = Color.Brown;
+                projectileSize = 10;
+
+
+
                 if (Raylib.IsKeyPressed(KeyboardKey.W) || Raylib.IsKeyPressed(KeyboardKey.Space))
                 {
                     Actor playerProjectile = Actor.Instantiate(new PlayerProjectileActor(), null, Owner.Transform.GlobalPosition, 0);
@@ -76,71 +83,113 @@ namespace BlockInvaders
             //Do Charged Shot
             if (PlayerActor.firingMode == true)
             {
-                //If W is held increment lifetime
-                if (Raylib.IsKeyDown(KeyboardKey.W) || Raylib.IsKeyDown(KeyboardKey.Space))
+                //If W is held down charge a projectile
+                if (Raylib.IsKeyDown(KeyboardKey.W))
                 {
+                    if (projectileLifetime < 500)
+                    {
+                        projectileCharge = 0;
+                    }
+                    if (projectileLifetime >= 500 && projectileLifetime < 2000)
+                    {
+                        projectileColor = Color.Red;
+                        projectileSize = (Owner.Transform.GlobalScale.x / 12) * 100;
+                        projectileCharge = 1;
+                        Raylib.DrawCircleV(Owner.Transform.GlobalPosition + _offset, projectileSize, projectileColor);
+                    }
+
+                    if (projectileLifetime >= 2000 && projectileLifetime < 5000)
+                    {
+                        projectileColor = Color.Orange;
+                        projectileSize = (Owner.Transform.GlobalScale.x / 11) * 100;
+                        projectileCharge = 2;
+                        Raylib.DrawCircleV(Owner.Transform.GlobalPosition + _offset, projectileSize, projectileColor);
+                    }
+
+                    if (projectileLifetime >= 5000 && projectileLifetime < 10000)
+                    {
+                        projectileColor = Color.White;
+                        projectileSize = (Owner.Transform.GlobalScale.x / 10) * 100;
+                        projectileCharge = 3;
+                        Raylib.DrawCircleV(Owner.Transform.GlobalPosition + _offset, projectileSize, projectileColor);
+                    }
+
+                    if (projectileLifetime >= 10000 && projectileLifetime < 25000)
+                    {
+                        projectileColor = Color.Blue;
+                        projectileSize = (Owner.Transform.GlobalScale.x / 9) * 100;
+                        projectileCharge = 4;
+                        Raylib.DrawCircleV(Owner.Transform.GlobalPosition + _offset, projectileSize, projectileColor);
+                    }
+
+                    if (projectileLifetime >= 25000)
+                    {
+                        projectileColor = Color.Violet;
+                        projectileSize = (Owner.Transform.GlobalScale.x / 8) * 100;
+                        projectileCharge = 5;
+                        Raylib.DrawCircleV(Owner.Transform.GlobalPosition + _offset, projectileSize, projectileColor);
+                    }
+
                     projectileLifetime++;
                 }
+
 
                 //Shoot a projectile with different effects depenting on the charge
                 if (!(Raylib.IsKeyDown(KeyboardKey.W)) && projectileLifetime > 0 || Raylib.IsKeyDown(KeyboardKey.Space) && projectileLifetime > 0)
                 {
-                    //1 damage small projectile
-                    if (projectileCharge == 0)
-                    {
-                        _color = Color.Red;
-                        projectileSize = (Owner.Transform.GlobalScale.x / 12) * 100;
-                    }
-
                     //2 damage small projectile
                     if (projectileCharge == 1)
                     {
-                        _color = Color.Red;
+                        projectileDamage = 2;
+                        projectileColor = Color.Red;
                         projectileSize = (Owner.Transform.GlobalScale.x / 12) * 100;
-                        Raylib.DrawCircleV(Owner.Transform.GlobalPosition + _offset, projectileSize, _color);
                     }
 
                     //4 damage small projectile
                     if (projectileCharge == 2)
                     {
-                        _color = Color.Orange;
+                        projectileDamage = 4;
+                        projectileColor = Color.Orange;
                         projectileSize = (Owner.Transform.GlobalScale.x / 11) * 100;
-                        Raylib.DrawCircleV(Owner.Transform.GlobalPosition + _offset, projectileSize, _color);
                     }
 
                     //6 damage small projectile
                     if (projectileCharge == 3)
                     {
-                        _color = Color.White;
+                        projectileDamage = 6;
+                        projectileColor = Color.White;
                         projectileSize = (Owner.Transform.GlobalScale.x / 10) * 100;
-                        Raylib.DrawCircleV(Owner.Transform.GlobalPosition + _offset, projectileSize, _color);
                     }
 
                     //10 damage small projectile
                     if (projectileCharge == 4)
                     {
-                        _color = Color.Blue;
+                        projectileDamage = 10;
+                        projectileColor = Color.Blue;
                         projectileSize = (Owner.Transform.GlobalScale.x / 9) * 100;
-                        Raylib.DrawCircleV(Owner.Transform.GlobalPosition + _offset, projectileSize, _color);
                     }
 
                     //20 damage big projectile
                     if (projectileCharge == 5)
                     {
-                        _color = Color.Violet;
+                        projectileDamage = 20;
+                        projectileColor = Color.Violet;
                         projectileSize = (Owner.Transform.GlobalScale.x / 8) * 100;
-                        Raylib.DrawCircleV(Owner.Transform.GlobalPosition + _offset, projectileSize, _color);
+                        Raylib.DrawCircleV(Owner.Transform.GlobalPosition + _offset, projectileSize, projectileColor);
                     }
 
-                    Actor playerProjectile = Actor.Instantiate(new PlayerProjectileActor(), null, Owner.Transform.GlobalPosition, 0);
-                    playerProjectile.Collider = new CircleCollider(playerProjectile, projectileSize);
+                    //Make a Projectile if charge is greater than 0
+                    if (projectileCharge > 0)
+                    {
+                        Actor playerProjectile = Actor.Instantiate(new PlayerProjectileActor(), null, Owner.Transform.GlobalPosition, 0);
+                        playerProjectile.Collider = new CircleCollider(playerProjectile, projectileSize);
+                    }
 
-
+                    //Reset projecileLifetime and projectileCharge
                     projectileCharge = 0;
                     projectileLifetime = 0;
                 }
             }
-
         }
     }
 }

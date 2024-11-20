@@ -20,7 +20,7 @@ namespace BlockInvaders
         {
             base.Start();
             AddComponent<DrawComponent>(new DrawComponent(this, (Transform.GlobalScale.x / 4) * 100, _color, new MathLibrary.Vector2(0, 0)));
-            AddComponent<HealthComponent>(new HealthComponent(this, 5));
+            AddComponent<HealthComponent>(new HealthComponent(this, 4 + TestScene.waveCount));
             AddComponent<EnemyShootComponent>(new EnemyShootComponent(this));
         }
 
@@ -36,7 +36,7 @@ namespace BlockInvaders
             if (other.ToString() == "BlockInvaders.PlayerProjectileActor" && enemyHit == false)
             {
                 //enemyHit = true;
-                (this).GetComponent<HealthComponent>().Health--;
+                (this).GetComponent<HealthComponent>().Health -= PlayerShootComponent.projectileDamage;
             }
         }
     }
