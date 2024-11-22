@@ -6,7 +6,7 @@ Shoot and protect your life!
 Be careful though as they shoot back! 
 <br/>
 
-Link to release download: https://github.com/sfaulk7/BlockInvaders/releases/tag/v1.2 
+Link to release download: https://github.com/sfaulk7/BlockInvaders/releases/tag/v1.3
 <br/>
 Once there download the BlockInvaders.v1.1.zip Right click the downloaded zip and extract all Open the extracted folder, 
 <br/>
