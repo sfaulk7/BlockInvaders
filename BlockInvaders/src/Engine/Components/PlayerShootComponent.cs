@@ -83,8 +83,8 @@ namespace BlockInvaders
             //Do Charged Shot
             if (PlayerActor.firingMode == true)
             {
-                //If W is held down charge a projectile
-                if (Raylib.IsKeyDown(KeyboardKey.W))
+                //If W or SPACE is held down charge a projectile
+                if (Raylib.IsKeyDown(KeyboardKey.W) || Raylib.IsKeyDown(KeyboardKey.Space))
                 {
                     if (projectileLifetime < 500)
                     {
@@ -135,7 +135,7 @@ namespace BlockInvaders
 
 
                 //Shoot a projectile with different effects depenting on the charge
-                if (!(Raylib.IsKeyDown(KeyboardKey.W)) && projectileLifetime > 0 || Raylib.IsKeyDown(KeyboardKey.Space) && projectileLifetime > 0)
+                if (Raylib.IsKeyReleased(KeyboardKey.W) && projectileLifetime > 0 || Raylib.IsKeyReleased(KeyboardKey.Space) && projectileLifetime > 0)
                 {
                     //2 damage small projectile
                     if (projectileCharge == 1)
