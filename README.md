@@ -7,6 +7,6 @@ Link to release download: https://github.com/sfaulk7/BlockInvaders/releases/tag/
 
 Use W or SPACE to shoot and Q or E to swap firing modes!
 
-Additionally, pressing ENTER will immediatly skip the current wave summoning the next one. Also pressing DELETE will damage the player!
+Additionally, pressing 7 in the main menu activates dev tools aloowing you to use skip wave and damage player with ENTER and DELETE respectively!
 
 Good Luck!
