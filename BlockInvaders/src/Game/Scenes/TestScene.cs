@@ -78,7 +78,18 @@ namespace BlockInvaders
             10,
             Color.Red);
 
-            if (waveCountDown <= 0 || Raylib.IsKeyPressed(KeyboardKey.Enter))
+
+            if (Game.devTools == true)
+            {
+                Raylib.DrawText("DEV TOOLS ACTIVATED",
+                10,
+                75,
+                10,
+                Color.DarkPurple);
+            }
+
+
+            if (waveCountDown <= 0 || Raylib.IsKeyPressed(KeyboardKey.Enter) && Game.devTools == true)
             {
                 waveTimer = 20 - waveCount / 5;
                 if (waveTimer < 5)

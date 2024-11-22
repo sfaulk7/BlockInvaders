@@ -29,7 +29,7 @@ namespace BlockInvaders
             //Restarts game if enter is pressed
             if (Raylib.IsKeyDown(KeyboardKey.Enter))
             {
-                Game.CurrentScene = Game.GetScene(0);
+                Game.CurrentScene = Game.GetScene(2);
             }
         }
 

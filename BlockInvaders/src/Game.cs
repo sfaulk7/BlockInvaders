@@ -15,6 +15,8 @@ namespace BlockInvaders
 
         public static Color backgroundColor = Color.Black;
 
+        public static bool devTools = false;
+
         public static Scene CurrentScene 
         { 
             get => _currentScene;
@@ -83,11 +85,13 @@ namespace BlockInvaders
             long lastTime = 0;
             double deltaTime = 1;
 
-            Scene testScene = new TestScene();
-            Scene deathScene = new DeathScene();
+            Scene testScene = new TestScene(); //Scene number 0
+            Scene deathScene = new DeathScene(); //Scene number 1
+            Scene titleScene = new TitleScene(); //Scene number 2
             AddScene(testScene);
             AddScene(deathScene);
-            CurrentScene = GetScene(0);
+            AddScene(titleScene);
+            CurrentScene = GetScene(2);
 
             //Scene
             CurrentScene.Start();

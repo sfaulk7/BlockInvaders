@@ -8,7 +8,7 @@
 ##### Heading 5
 ###### Heading 6
 
-[Link to something with this id](#custom-id)
+[Link to something with this id](#custom-ID)
 
 <!-- Horizontal Rule -->
 ---
