@@ -90,45 +90,48 @@ namespace BlockInvaders
                     {
                         projectileCharge = 0;
                     }
+
+                    //Charge level 1
                     if (projectileLifetime >= 500 && projectileLifetime < 2000)
                     {
                         projectileColor = Color.Red;
                         projectileSize = (Owner.Transform.GlobalScale.x / 12) * 100;
                         projectileCharge = 1;
-                        Raylib.DrawCircleV(Owner.Transform.GlobalPosition + _offset, projectileSize, projectileColor);
                     }
 
+                    //Charge level 2
                     if (projectileLifetime >= 2000 && projectileLifetime < 5000)
                     {
                         projectileColor = Color.Orange;
                         projectileSize = (Owner.Transform.GlobalScale.x / 11) * 100;
                         projectileCharge = 2;
-                        Raylib.DrawCircleV(Owner.Transform.GlobalPosition + _offset, projectileSize, projectileColor);
                     }
 
+                    //Charge level 3
                     if (projectileLifetime >= 5000 && projectileLifetime < 10000)
                     {
                         projectileColor = Color.White;
                         projectileSize = (Owner.Transform.GlobalScale.x / 10) * 100;
                         projectileCharge = 3;
-                        Raylib.DrawCircleV(Owner.Transform.GlobalPosition + _offset, projectileSize, projectileColor);
                     }
-
+                    
+                    //Charge level 4
                     if (projectileLifetime >= 10000 && projectileLifetime < 25000)
                     {
                         projectileColor = Color.Blue;
                         projectileSize = (Owner.Transform.GlobalScale.x / 9) * 100;
                         projectileCharge = 4;
-                        Raylib.DrawCircleV(Owner.Transform.GlobalPosition + _offset, projectileSize, projectileColor);
                     }
 
+                    //Charge level 5
                     if (projectileLifetime >= 25000)
                     {
                         projectileColor = Color.Violet;
                         projectileSize = (Owner.Transform.GlobalScale.x / 8) * 100;
                         projectileCharge = 5;
-                        Raylib.DrawCircleV(Owner.Transform.GlobalPosition + _offset, projectileSize, projectileColor);
                     }
+
+                    Raylib.DrawCircleV(Owner.Transform.GlobalPosition + _offset, projectileSize, projectileColor);
 
                     projectileLifetime++;
                 }
@@ -153,7 +156,7 @@ namespace BlockInvaders
                         projectileSize = (Owner.Transform.GlobalScale.x / 11) * 100;
                     }
 
-                    //6 damage small projectile
+                    //6 damage moderate projectile
                     if (projectileCharge == 3)
                     {
                         projectileDamage = 6;
@@ -161,7 +164,7 @@ namespace BlockInvaders
                         projectileSize = (Owner.Transform.GlobalScale.x / 10) * 100;
                     }
 
-                    //10 damage small projectile
+                    //10 damage moderate projectile
                     if (projectileCharge == 4)
                     {
                         projectileDamage = 10;
@@ -175,7 +178,6 @@ namespace BlockInvaders
                         projectileDamage = 20;
                         projectileColor = Color.Violet;
                         projectileSize = (Owner.Transform.GlobalScale.x / 8) * 100;
-                        Raylib.DrawCircleV(Owner.Transform.GlobalPosition + _offset, projectileSize, projectileColor);
                     }
 
                     //Make a Projectile if charge is greater than 0

@@ -33,11 +33,7 @@ namespace BlockInvaders
 
         public override void OnCollision(Actor other)
         {
-            if (other.ToString() == "BlockInvaders.PlayerProjectileActor" && enemyHit == false)
-            {
-                //enemyHit = true;
-                (this).GetComponent<HealthComponent>().Health -= PlayerShootComponent.projectileDamage;
-            }
+
         }
     }
 }

@@ -12,9 +12,13 @@ namespace BlockInvaders
     {
         public float speed { get; set; } = 1000;
 
+        public int damage;
+
         public override void Start()
         {
             base.Start();
+
+            damage = PlayerShootComponent.projectileDamage;
 
             AddComponent<DrawComponent>(new DrawComponent(this, PlayerShootComponent.projectileSize, PlayerShootComponent.projectileColor, new MathLibrary.Vector2(0, 0)));
         }
@@ -43,6 +47,7 @@ namespace BlockInvaders
             //Only do collision behavior if the colliding Actor isn't playerGun or player
             if (other.ToString() != "BlockInvaders.PlayerGun" && other.ToString() != "BlockInvaders.PlayerActor")
             {
+                (other).GetComponent<HealthComponent>().Health-= damage;
                 Game.CurrentScene.RemoveActor(this);
             }
         }

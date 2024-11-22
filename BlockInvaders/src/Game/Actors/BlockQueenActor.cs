@@ -41,14 +41,14 @@ namespace BlockInvaders
             if (Transform.GlobalPosition.x >= screenDimensions.x - 75)
             {
                 goingLeft = true;
-                MathLibrary.Vector2 subtract = new MathLibrary.Vector2(-5, 25);
+                MathLibrary.Vector2 subtract = new MathLibrary.Vector2(-5, 50);
                 Transform.LocalPosition += (subtract);
             }
             //If enemy goes off the left of screen turn right and shift down
             if (Transform.GlobalPosition.x <= 0 + 75)
             {
                 goingLeft = false;
-                MathLibrary.Vector2 subtract = new MathLibrary.Vector2(5, 25);
+                MathLibrary.Vector2 subtract = new MathLibrary.Vector2(5, 50);
                 Transform.LocalPosition += (subtract);
             }
             //Go right
@@ -72,11 +72,7 @@ namespace BlockInvaders
 
         public override void OnCollision(Actor other)
         {
-            if (other.ToString() == "BlockInvaders.PlayerProjectileActor" && enemyHit == false)
-            {
-                //enemyHit = true;
-                (this).GetComponent<HealthComponent>().Health -= PlayerShootComponent.projectileDamage;
-            }
+
         }
     }
 }
